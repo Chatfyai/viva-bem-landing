@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, MapPin } from "lucide-react";
-import CardCarouselDemo from "@/components/CardCarouselDemo";
 
 const Index = () => {
   return (
@@ -43,37 +42,6 @@ const Index = () => {
               <MapPin className="mr-2 h-5 w-5" />
               Localização
             </Button>
-          </div>
-        </div>
-      </div>
-      
-      {/* Sections Below Hero */}
-      <div className="bg-background py-16">
-        {/* Mais Vendido Section */}
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Mais Vendido
-            </h2>
-          </div>
-          
-          {/* Produto em Alta Section */}
-          <div className="text-center mb-12">
-            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
-              Produto em Alta
-            </h3>
-            
-            {/* Card Carousel */}
-            <div className="max-w-4xl mx-auto">
-              <CardCarouselDemo />
-            </div>
-          </div>
-          
-          {/* Shipping Message */}
-          <div className="text-center mt-16">
-            <p className="text-lg font-light text-muted-foreground">
-              Enviamos para todo Brasil
-            </p>
           </div>
         </div>
       </div>
