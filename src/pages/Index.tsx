@@ -3,7 +3,7 @@ import { MessageCircle, MapPin } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative font-montserrat">
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
