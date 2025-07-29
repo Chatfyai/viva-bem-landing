@@ -2,6 +2,28 @@ import ScrollStack, { ScrollStackItem } from './ScrollStack';
 import { Award, Package, Truck, Users } from 'lucide-react';
 
 const PorQueEscolherSection = () => {
+  const handleStackComplete = () => {
+    setTimeout(() => {
+      // Encontra a próxima seção (DepoimentosSection)
+      const nextSection = document.querySelector('[data-section="depoimentos"]') || 
+                          document.querySelector('section:nth-of-type(4)') ||
+                          document.querySelector('#depoimentos');
+      
+      if (nextSection) {
+        nextSection.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      } else {
+        // Fallback: rola para baixo usando scroll relativo
+        window.scrollBy({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        });
+      }
+    }, 2000); // 2 segundos de delay
+  };
+
   return (
     <section className="py-12 md:py-20 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4">
@@ -28,6 +50,7 @@ const PorQueEscolherSection = () => {
             rotationAmount={1}
             blurAmount={0.5}
             className="h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden"
+            onStackComplete={handleStackComplete}
           >
             <ScrollStackItem>
               <div className="bg-brand-green rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-xl h-full flex flex-col justify-center">
