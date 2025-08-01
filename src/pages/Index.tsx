@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { MessageCircle, MapPin } from "lucide-react";
+import { MessageCircle, MapPin, MoveDown } from "lucide-react";
 import MaisVendidosSection from "@/components/MaisVendidosSection";
 import LocalizacaoSection from "@/components/LocalizacaoSection";
 import PorQueEscolherSection from "@/components/PorQueEscolherSection";
@@ -99,6 +99,12 @@ const Index = () => {
               Nossa localização
             </Button>
             </div>
+            
+          </div>
+          
+          {/* Seta animada */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <MoveDown className="h-8 w-8 text-white" />
           </div>
         </div>
       </div>
