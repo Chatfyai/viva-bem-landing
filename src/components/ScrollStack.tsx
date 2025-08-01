@@ -184,6 +184,109 @@ const ScrollStack = ({
 
     lenis.on('scroll', handleScroll);
 
+    // Adicionar lógica para permitir scroll para fora quando chegar ao final ou início
+    const handleWheel = (e: WheelEvent) => {
+      const isAtBottom = scroller.scrollTop >= scroller.scrollHeight - scroller.clientHeight - 10;
+      const isAtTop = scroller.scrollTop <= 10;
+      const isScrollingDown = e.deltaY > 0;
+      const isScrollingUp = e.deltaY < 0;
+      
+      if (isAtBottom && isScrollingDown) {
+        // Permitir que o evento de scroll passe para o elemento pai quando rolar para baixo no final
+        e.stopPropagation();
+        // Forçar scroll da página principal
+        window.scrollBy({
+          top: e.deltaY,
+          behavior: 'auto'
+        });
+      } else if (isAtTop && isScrollingUp) {
+        // Permitir que o evento de scroll passe para o elemento pai quando rolar para cima no início
+        e.stopPropagation();
+        // Forçar scroll da página principal
+        window.scrollBy({
+          top: e.deltaY,
+          behavior: 'auto'
+        });
+      }
+    };
+
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    let isScrollingOutside = false;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
+      isScrollingOutside = false;
+      scroller.dataset.touchStartY = touchStartY.toString();
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const touchCurrentY = e.touches[0].clientY;
+      const deltaY = touchStartY - touchCurrentY;
+      const touchDuration = Date.now() - touchStartTime;
+      
+      const isAtBottom = scroller.scrollTop >= scroller.scrollHeight - scroller.clientHeight - 5;
+      const isAtTop = scroller.scrollTop <= 5;
+      const isScrollingDown = deltaY > 0;
+      const isScrollingUp = deltaY < 0;
+      
+      // Detectar se deve começar a rolar fora do container
+      if ((isAtBottom && isScrollingDown) || (isAtTop && isScrollingUp)) {
+        // Threshold menor para início mais responsivo
+        const threshold = window.innerWidth < 768 ? 15 : 20; // Menor threshold em mobile
+        
+        if (!isScrollingOutside && Math.abs(deltaY) > threshold) {
+          isScrollingOutside = true;
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        
+        if (isScrollingOutside) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Calcular velocidade baseada no tempo e distância
+          const velocity = Math.abs(deltaY) / Math.max(touchDuration, 1);
+          
+          // Multiplicador adaptativo baseado no dispositivo e velocidade
+          let multiplier = 1.5; // Base para mobile
+          if (window.innerWidth >= 768) {
+            multiplier = 2; // Maior para tablet/desktop
+          }
+          
+          // Ajustar baseado na velocidade do gesto
+          if (velocity > 2) {
+            multiplier *= 1.5; // Gestos rápidos = scroll mais rápido
+          } else if (velocity < 0.5) {
+            multiplier *= 0.8; // Gestos lentos = scroll mais controlado
+          }
+          
+          // Limitar o multiplicador
+          multiplier = Math.min(Math.max(multiplier, 1), 4);
+          
+          // Forçar scroll da página principal com velocidade adaptativa
+          window.scrollBy({
+            top: deltaY * multiplier,
+            behavior: 'auto'
+          });
+          
+          // Atualizar posição inicial para movimento contínuo
+          touchStartY = touchCurrentY;
+          touchStartTime = Date.now();
+        }
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      isScrollingOutside = false;
+    };
+
+    scroller.addEventListener('wheel', handleWheel, { passive: false });
+    scroller.addEventListener('touchstart', handleTouchStart, { passive: true });
+    scroller.addEventListener('touchmove', handleTouchMove, { passive: false });
+    scroller.addEventListener('touchend', handleTouchEnd, { passive: true });
+
     const raf = (time) => {
       lenis.raf(time);
       animationFrameRef.current = requestAnimationFrame(raf);
@@ -191,7 +294,15 @@ const ScrollStack = ({
     animationFrameRef.current = requestAnimationFrame(raf);
 
     lenisRef.current = lenis;
-    return lenis;
+    
+    // Retornar função de cleanup
+    return () => {
+      scroller.removeEventListener('wheel', handleWheel);
+      scroller.removeEventListener('touchstart', handleTouchStart);
+      scroller.removeEventListener('touchmove', handleTouchMove);
+      scroller.removeEventListener('touchend', handleTouchEnd);
+      lenis.destroy();
+    };
   }, [handleScroll]);
 
   useLayoutEffect(() => {
@@ -215,7 +326,7 @@ const ScrollStack = ({
       card.style.webkitPerspective = '1000px';
     });
 
-    setupLenis();
+    const cleanupLenis = setupLenis();
 
     updateCardTransforms();
 
@@ -223,7 +334,9 @@ const ScrollStack = ({
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
-      if (lenisRef.current) {
+      if (cleanupLenis) {
+        cleanupLenis();
+      } else if (lenisRef.current) {
         lenisRef.current.destroy();
       }
       stackCompletedRef.current = false;
