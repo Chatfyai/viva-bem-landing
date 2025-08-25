@@ -25,33 +25,38 @@ const PorQueEscolherSection = () => {
   };
 
   return (
-    <section className="py-12 md:py-20 bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4">
-        {/* Título da seção */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
-            Por que escolher a{' '}
-            <span className="text-brand-green">Naturalys</span>?
-          </h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-            Nossos diferenciais que fazem da Naturalys sua melhor escolha para uma vida mais saudável
-          </p>
+    <>
+      {/* Seção do título */}
+      <section className="bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
+              Por que escolher a{' '}
+              <span className="text-brand-green">Naturalys</span>?
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+              Nossos diferenciais que fazem da Naturalys sua melhor escolha para uma vida mais saudável
+            </p>
+          </div>
         </div>
+      </section>
 
-        {/* Cards com ScrollStack */}
-        <div className="max-w-4xl mx-auto">
-          <ScrollStack
-            itemDistance={80}
-            itemScale={0.03}
-            itemStackDistance={20}
-            stackPosition="25%"
-            scaleEndPosition="10%"
-            baseScale={0.85}
-            rotationAmount={1}
-            blurAmount={0.5}
-            className="h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden"
-            onStackComplete={handleStackComplete}
-          >
+      {/* Seção do ScrollStack */}
+      <section className="bg-white">
+        <div className="container mx-auto">
+          <div className="max-w-4xl mx-auto">
+            <ScrollStack
+              itemDistance={80}
+              itemScale={0.03}
+              itemStackDistance={20}
+              stackPosition="25%"
+              scaleEndPosition="10%"
+              baseScale={0.85}
+              rotationAmount={1}
+              blurAmount={0.5}
+              className="h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden"
+              onStackComplete={handleStackComplete}
+            >
             <ScrollStackItem>
               <div className="bg-brand-green rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-xl h-full flex flex-col justify-center">
                 <div className="text-center">
@@ -129,9 +134,10 @@ const PorQueEscolherSection = () => {
               </div>
             </ScrollStackItem>
           </ScrollStack>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
