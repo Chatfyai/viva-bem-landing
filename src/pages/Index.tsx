@@ -1,33 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { MessageCircle, MapPin, MoveDown } from "lucide-react";
 import MaisVendidosSection from "@/components/MaisVendidosSection";
 import LocalizacaoSection from "@/components/LocalizacaoSection";
 import PorQueEscolherSection from "@/components/PorQueEscolherSection";
 import DepoimentosSection from "@/components/DepoimentosSection";
-import RotatingText from "@/components/RotatingText";
-import { useState, useEffect } from "react";
+import SplitText from "@/components/SplitText";
+import MariChat from "@/components/MariChat";
+import TestChat from "@/components/TestChat";
+import { useState } from "react";
 
 const Index = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    const checkIfOpen = () => {
-      const now = new Date();
-      const day = now.getDay(); // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
-      const hour = now.getHours();
-      
-      // Segunda a Sexta (1-5) entre 07h e 18h
-      const isWeekday = day >= 1 && day <= 5;
-      const isOpenHours = hour >= 7 && hour < 18;
-      
-      setIsOpen(isWeekday && isOpenHours);
-    };
-
-    checkIfOpen();
-    const interval = setInterval(checkIfOpen, 60000); // Verifica a cada minuto
-
-    return () => clearInterval(interval);
-  }, []);
+  const [showChat, setShowChat] = useState(false);
 
   const handleWhatsAppClick = () => {
     window.open('https://api.whatsapp.com/send/?phone=5584998561010&text=Olá&type=phone_number&app_absent=0', '_blank');
@@ -37,74 +18,139 @@ const Index = () => {
     window.open('https://maps.app.goo.gl/v6StpsTBydrvGHBQ8', '_blank');
   };
 
+  const handleAnimationComplete = () => {
+    console.log('All letters have animated!');
+  };
+
+  const handleChatWithMari = () => {
+    console.log('Iniciando chat com Mari...');
+    setShowChat(true);
+  };
+
+  const handleBackFromChat = () => {
+    console.log('Voltando da Mari...');
+    setShowChat(false);
+  };
+
+  // Mostrar chat se ativo
+  if (showChat) {
+    return (
+      <div className="font-montserrat">
+        <MariChat onBack={handleBackFromChat} />
+      </div>
+    );
+  }
+
   return (
     <div className="font-montserrat">
-      {/* Hero Section */}
+      {/* Hero Section - Mari AI Assistant */}
       <div className="min-h-screen relative">
-        {/* Hero Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/lovable-uploads/e23c7dad-f439-406d-bc22-e6c9dd94f4e7.png')`
-          }}
-        />
-        
-        {/* Hero Content */}
-        <div className="relative z-10 min-h-screen flex flex-col">
-          {/* Operating Hours Banner */}
-        {isOpen && (
-          <div className="bg-[#101010] text-white py-3 px-4 text-center w-full">
-            <p className="font-medium">Estamos abertos, te esperando!</p>
-          </div>
-        )}
-          
-          {/* Main Content */}
-          <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-8 max-w-4xl">
-              <div>
-                A sua vida{" "}
-                <RotatingText
-                  texts={['saudável', 'feliz', 'ativa', 'vibrante']}
-                  mainClassName="px-2 sm:px-2 md:px-3 bg-brand-green text-brand-green-foreground overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
-                  staggerFrom={"last"}
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  exit={{ y: "-120%" }}
-                  staggerDuration={0.025}
-                  splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
-                  transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                  rotationInterval={2000}
-                />
-                {" "}começa aqui
-              </div>
-            </h1>
-            
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mt-8">
-              <Button 
-                size="lg" 
-                className="bg-brand-green hover:bg-brand-green/90 text-brand-green-foreground px-8 py-6 text-lg"
-                onClick={handleWhatsAppClick}
+        <div className="relative w-full h-screen overflow-hidden">
+          {/* Gradiente animado de fundo */}
+          <div className="absolute inset-0 bg-gradient-animated opacity-20" />
+          <div className="relative z-10 flex flex-col h-full bg-white">
+            {/* Header */}
+            <header className="absolute top-0 left-0 right-0 flex items-center justify-end p-5 h-[64px]">
+              <button 
+                className="text-text-primary flex items-center justify-center h-10 w-10 rounded-full hover:bg-gray-100 transition-colors"
+                onClick={() => window.location.reload()}
+                aria-label="Atualizar"
               >
-                <MessageCircle className="mr-2 h-5 w-5" />
-                WhatsApp
-              </Button>
-                          <Button 
-              size="lg" 
-              variant="outline"
-              className="border-brand-green text-brand-green bg-transparent hover:bg-brand-green hover:text-brand-green-foreground px-8 py-6 text-lg"
-              onClick={handleMapsClick}
-            >
-              <MapPin className="mr-2 h-5 w-5" />
-              Nossa localização
-            </Button>
-            </div>
-            
-          </div>
-          
-          {/* Seta animada */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <MoveDown className="h-8 w-8 text-white" />
+                <span className="material-symbols-outlined text-[24px]">refresh</span>
+              </button>
+            </header>
+
+            {/* Main Content */}
+            <main className="flex flex-col flex-1 justify-center items-center px-4 w-full">
+              <div className="flex flex-col items-center w-full">
+                <div className="relative flex items-center gap-2 mb-[12px]">
+                  <SplitText
+                    text="Oi, sou a Mari"
+                    className="text-brand-green text-[36px] font-light tracking-[0.5px] font-poppins"
+                    tag="h1"
+                    delay={80}
+                    duration={0.8}
+                    ease="power2.out"
+                    from={{ opacity: 0, y: 20, scale: 0.8 }}
+                    to={{ opacity: 1, y: 0, scale: 1 }}
+                    onLetterAnimationComplete={handleAnimationComplete}
+                  />
+                  <span 
+                    className="material-symbols-outlined text-brand-green text-[32px] absolute -top-4 -right-8 opacity-0"
+                    style={{
+                      animation: 'fadeInStar 0.6s ease-out 1.5s forwards, pulse 2s infinite 2.1s'
+                    }}
+                  >
+                    auto_awesome
+                  </span>
+                </div>
+                <p className="text-text-secondary text-[15px] font-normal tracking-[0.3px] mb-[48px] font-poppins">
+                  Faça uma pergunta para mim
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex w-[88%] max-w-[480px] flex-col items-stretch gap-[14px]">
+                <button 
+                  className="group relative flex min-w-[84px] cursor-pointer items-center overflow-hidden rounded-[16px] h-[58px] px-5 bg-white text-text-primary shadow-[0_2px_12px_rgba(0,0,0,0.12)] transition-all duration-300 ease-in-out active:scale-[1.02] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
+                  onClick={handleWhatsAppClick}
+                >
+                  <span className="material-symbols-outlined text-brand-green text-[22px] absolute left-5">sms</span>
+                  <span className="truncate text-[17px] font-medium pl-[40px] text-left w-full font-poppins">
+                    Whatsapp
+                  </span>
+                </button>
+
+                <button 
+                  className="group relative flex min-w-[84px] cursor-pointer items-center overflow-hidden rounded-[16px] h-[58px] px-5 bg-white text-text-primary shadow-[0_2px_12px_rgba(0,0,0,0.12)] transition-all duration-300 ease-in-out active:scale-[1.02] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
+                  onClick={handleMapsClick}
+                >
+                  <span className="material-symbols-outlined text-brand-green text-[22px] absolute left-5">location_on</span>
+                  <span className="truncate text-[17px] font-medium pl-[40px] text-left w-full font-poppins">
+                    Nossa localização
+                  </span>
+                </button>
+
+                <button 
+                  className="group relative flex min-w-[84px] cursor-pointer items-center overflow-hidden rounded-[16px] h-[58px] px-5 bg-white text-text-primary shadow-[0_2px_12px_rgba(0,0,0,0.12)] transition-all duration-300 ease-in-out active:scale-[1.02] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
+                  onClick={() => document.querySelector('#depoimentos')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  <span className="material-symbols-outlined text-brand-green text-[22px] absolute left-5">star</span>
+                  <span className="truncate text-[17px] font-medium pl-[40px] text-left w-full font-poppins">
+                    Depoimentos
+                  </span>
+                </button>
+              </div>
+            </main>
+
+            {/* Footer with Input */}
+            <footer className="absolute bottom-0 left-0 right-0 p-5 pb-[24px] bg-transparent">
+              <label className="relative flex items-center h-[54px] w-[88%] mx-auto max-w-[600px]">
+                <span className="material-symbols-outlined text-brand-green absolute left-4">auto_awesome</span>
+                <input 
+                  className="w-full h-full rounded-full text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-green border-none bg-white shadow-input placeholder:text-placeholder-gray pl-12 pr-12 text-base font-normal leading-normal font-poppins"
+                  placeholder="Faça uma pergunta..."
+                  type="text"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      const input = e.target as HTMLInputElement;
+                      if (input.value.trim()) {
+                        // Iniciar chat com Mari
+                        handleChatWithMari();
+                      }
+                    }
+                  }}
+                  onFocus={handleChatWithMari}
+                />
+                <button 
+                  className="absolute right-1.5 flex items-center justify-center w-10 h-10 rounded-full bg-brand-green text-white hover:bg-brand-green/90 transition-colors"
+                  onClick={handleChatWithMari}
+                  aria-label="Enviar pergunta"
+                >
+                  <span className="material-symbols-outlined text-xl">arrow_upward</span>
+                </button>
+              </label>
+            </footer>
           </div>
         </div>
       </div>

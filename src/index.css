@@ -55,8 +55,16 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
     
     /* Custom brand colors */
-    --brand-green: 89 43% 61%;
+    --brand-green: 89 61% 35%;
     --brand-green-foreground: 0 0% 100%;
+    
+    /* Chat colors */
+    --text-primary: 45 45% 18%;
+    --text-contact: 0 0% 10%;
+    --text-secondary: 0 0% 55%;
+    --placeholder-gray: 0 0% 67%;
+    --incoming-bubble: 0 0% 94%;
+    --outgoing-bubble: 89 61% 90%;
   }
 
   .dark {
@@ -113,5 +121,42 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .bg-gradient-animated {
+    background: linear-gradient(
+      45deg,
+      #4D9E15,
+      #6BB82D,
+      #4D9E15,
+      #5CB015
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes fadeInStar {
+    0% {
+      opacity: 0;
+      transform: scale(0.5) rotate(-180deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
   }
 }

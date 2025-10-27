@@ -20,8 +20,16 @@ export default {
 		extend: {
 			fontFamily: {
 				'montserrat': ['Montserrat', 'sans-serif'],
+				'poppins': ['Poppins', 'sans-serif'],
+				'display': ['Poppins', 'sans-serif'],
 			},
 			colors: {
+				'text-primary': 'hsl(var(--text-primary))',
+				'text-contact': 'hsl(var(--text-contact))',
+				'text-secondary': 'hsl(var(--text-secondary))',
+				'placeholder-gray': 'hsl(var(--placeholder-gray))',
+				'incoming-bubble': 'hsl(var(--incoming-bubble))',
+				'outgoing-bubble': 'hsl(var(--outgoing-bubble))',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -74,6 +82,11 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			boxShadow: {
+				'card': '0 4px 20px rgba(0, 0, 0, 0.08)',
+				'card-hover': '0 6px 24px rgba(0, 0, 0, 0.1)',
+				'input': '0 4px 16px rgba(0, 0, 0, 0.08)'
 			},
 			keyframes: {
 				'accordion-down': {
