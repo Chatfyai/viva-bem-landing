@@ -24,7 +24,6 @@ dist-ssr
 *.sw?
 
 # Environment and config files
-src/config/env.ts
 .env
 .env.local
 .env.*.local
