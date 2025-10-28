@@ -62,6 +62,16 @@ This project is built with:
 
 ## How can I deploy this project?
 
+### Deploy na Vercel
+
+1. Acesse [Vercel](https://vercel.com) e importe este repositório
+2. Configure as seguintes **variáveis de ambiente** no painel da Vercel:
+   - `VITE_OPENAI_API_KEY`: Sua chave da API OpenAI
+   - `VITE_CHATKIT_WORKFLOW_ID`: ID do workflow do Chatkit
+3. Clique em "Deploy"
+
+### Deploy via Lovable
+
 Simply open [Lovable](https://lovable.dev/projects/69fb3e76-b370-41eb-8ab7-a6686c479f18) and click on Share -> Publish.
 
 ## Can I connect a custom domain to my Lovable project?
