@@ -27,7 +27,7 @@ const PorQueEscolherSection = () => {
   return (
     <>
       {/* Seção do título */}
-      <section className="bg-gradient-to-b from-gray-50 to-white">
+      <section className="bg-gradient-to-b from-gray-50 to-white pt-16 md:pt-24">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
@@ -42,7 +42,7 @@ const PorQueEscolherSection = () => {
       </section>
 
       {/* Seção do ScrollStack */}
-      <section className="bg-white">
+      <section className="bg-white pb-16 md:pb-24">
         <div className="container mx-auto">
           <div className="max-w-4xl mx-auto">
             <ScrollStack
