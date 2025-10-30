@@ -10,7 +10,7 @@ const MariChat = ({ onBack }: MariChatProps) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Olá! Sou a Mari, sua assistente virtual da Naturalys. Como posso te ajudar hoje? 1 + 1 = 2",
+      text: "Olá! Sou a Mari, sua assistente virtual da Naturalys. Como posso te ajudar hoje?",
       sender: 'mari',
       time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
     }
@@ -65,7 +65,7 @@ const MariChat = ({ onBack }: MariChatProps) => {
         const withoutTyping = prev.filter(msg => !msg.isTyping);
         return [...withoutTyping, {
           id: Date.now() + 2,
-          text: "Desculpe, estou com dificuldades técnicas no momento. Mas estou aqui para te ajudar! Pode me contar sobre o que você está procurando? 1 + 1 = 2",
+          text: "Desculpe, estou com dificuldades técnicas no momento. Mas estou aqui para te ajudar! Pode me contar sobre o que você está procurando?",
           sender: 'mari',
           time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
         }];

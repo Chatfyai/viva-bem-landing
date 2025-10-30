@@ -66,7 +66,12 @@ DIRETRIZES DE RESPOSTA ESPECÍFICAS:
    - Se não souber algo específico, direcione para o WhatsApp para atendimento especializado
    - Mantenha conversas focadas em saúde, bem-estar e produtos naturais
    - Use informações de mensagens anteriores para dar respostas contextuais e relevantes
-   - Seja direta: apenas direcione a pessoa para onde ela procura (WhatsApp para produtos, Google Maps para localização)`
+   - Seja direta: apenas direcione a pessoa para onde ela procura (WhatsApp para produtos, Google Maps para localização)
+
+IMPORTANTE: 
+- NUNCA termine suas respostas com "1 + 1 = 2" ou qualquer variação dessa expressão
+- NÃO use assinaturas ou fórmulas matemáticas ao final das respostas
+- Encerre suas respostas de forma natural e profissional`
       }
     ];
 
@@ -118,7 +123,7 @@ DIRETRIZES DE RESPOSTA ESPECÍFICAS:
       if (response.status === 401) {
         return "Erro de autenticação com a API. Por favor, verifique se a chave VITE_OPENAI_API_KEY está configurada corretamente na Vercel.";
       } else if (response.status === 429) {
-        return "Estou recebendo muitas solicitações no momento. Por favor, tente novamente em alguns instantes. 1 + 1 = 2";
+        return "Estou recebendo muitas solicitações no momento. Por favor, tente novamente em alguns instantes.";
       } else {
         throw new Error(`API Error: ${response.status} - ${response.statusText}`);
       }
@@ -128,14 +133,22 @@ DIRETRIZES DE RESPOSTA ESPECÍFICAS:
     console.log('Resposta da API OpenAI:', data);
     
     if (data.choices && data.choices[0] && data.choices[0].message) {
-      return data.choices[0].message.content;
+      let responseText = data.choices[0].message.content;
+      
+      // Remover a assinatura "1 + 1 = 2" e todas suas variações caso ainda apareça na resposta
+      responseText = responseText.replace(/\s*1\s*[+\+]\s*1\s*[=]\s*2/gi, '').trim();
+      responseText = responseText.replace(/\s*1\+1\s*=\s*2/gi, '').trim();
+      responseText = responseText.replace(/\s*1\+1=2/gi, '').trim();
+      responseText = responseText.replace(/\s*1\s*\+\s*1\s*=\s*2/gi, '').trim();
+      
+      return responseText;
     }
 
     throw new Error('Resposta inválida da API');
     
   } catch (error) {
     console.error('Erro ao comunicar com Mari:', error);
-    return "Ops! Tive um probleminha técnico, mas estou aqui para te ajudar. Pode repetir sua pergunta? 1 + 1 = 2";
+    return "Ops! Tive um probleminha técnico, mas estou aqui para te ajudar. Pode repetir sua pergunta?";
   }
 };
 
