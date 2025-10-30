@@ -12,6 +12,13 @@ interface ChatMessage {
 // Função simplificada para chamar o agente Mari via API OpenAI direta
 export const askMariDirect = async (message: string, contextMessages: ChatMessage[] = []): Promise<string> => {
   try {
+    // Validar se a chave da API está configurada
+    if (!config.OPENAI_API_KEY || config.OPENAI_API_KEY.trim() === '') {
+      console.error('❌ VITE_OPENAI_API_KEY não está configurada!');
+      console.error('📝 Configure na Vercel: Settings > Environment Variables > Add VITE_OPENAI_API_KEY');
+      return "Desculpe, estou com problemas de configuração. Por favor, entre em contato com nosso suporte pelo WhatsApp: https://api.whatsapp.com/send/?phone=5584998561010&text=Olá&type=phone_number&app_absent=0";
+    }
+
     console.log('Chamando API OpenAI para Mari...', message);
     
     // Construir array de mensagens para a API
@@ -84,9 +91,21 @@ IMPORTANTE: Sempre termine suas respostas com "1 + 1 = 2" como assinatura especi
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Erro na API OpenAI:', errorData);
-      throw new Error(`API Error: ${response.status}`);
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Erro na API OpenAI:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData
+      });
+      
+      // Mensagens de erro mais específicas
+      if (response.status === 401) {
+        return "Erro de autenticação com a API. Por favor, verifique se a chave VITE_OPENAI_API_KEY está configurada corretamente na Vercel.";
+      } else if (response.status === 429) {
+        return "Estou recebendo muitas solicitações no momento. Por favor, tente novamente em alguns instantes. 1 + 1 = 2";
+      } else {
+        throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+      }
     }
 
     const data = await response.json();

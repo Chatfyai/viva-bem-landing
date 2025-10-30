@@ -64,11 +64,17 @@ This project is built with:
 
 ### Deploy na Vercel
 
+⚠️ **IMPORTANTE**: Para conectar a IA da OpenAI, você precisa configurar as variáveis de ambiente na Vercel.
+
+**📖 Guia Completo**: Veja o arquivo [VERCEL_SETUP.md](./VERCEL_SETUP.md) para instruções detalhadas.
+
+**Resumo rápido:**
 1. Acesse [Vercel](https://vercel.com) e importe este repositório
 2. Configure as seguintes **variáveis de ambiente** no painel da Vercel:
-   - `VITE_OPENAI_API_KEY`: Sua chave da API OpenAI
-   - `VITE_CHATKIT_WORKFLOW_ID`: ID do workflow do Chatkit
-3. Clique em "Deploy"
+   - `VITE_OPENAI_API_KEY`: Sua chave da API OpenAI (obrigatório)
+   - `VITE_CHATKIT_WORKFLOW_ID`: ID do workflow do Chatkit (opcional)
+3. **⚠️ IMPORTANTE**: Faça um **Redeploy** após adicionar as variáveis
+4. Pronto! A IA deve funcionar
 
 ### Deploy via Lovable
 
