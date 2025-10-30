@@ -66,9 +66,7 @@ DIRETRIZES DE RESPOSTA ESPECÍFICAS:
    - Se não souber algo específico, direcione para o WhatsApp para atendimento especializado
    - Mantenha conversas focadas em saúde, bem-estar e produtos naturais
    - Use informações de mensagens anteriores para dar respostas contextuais e relevantes
-   - Seja direta: apenas direcione a pessoa para onde ela procura (WhatsApp para produtos, Google Maps para localização)
-
-IMPORTANTE: Sempre termine suas respostas com "1 + 1 = 2" como assinatura especial.`
+   - Seja direta: apenas direcione a pessoa para onde ela procura (WhatsApp para produtos, Google Maps para localização)`
       }
     ];
 
