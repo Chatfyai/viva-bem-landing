@@ -3,7 +3,7 @@ import LocalizacaoSection from "@/components/LocalizacaoSection";
 import PorQueEscolherSection from "@/components/PorQueEscolherSection";
 import DepoimentosSection from "@/components/DepoimentosSection";
 import SplitText from "@/components/SplitText";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowLeft } from 'lucide-react';
 import { askMariDirect } from '../agents/mariAgentSimple';
 
@@ -31,6 +31,9 @@ const Index = () => {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Carregar histórico do localStorage ao montar o componente
   useEffect(() => {
@@ -53,6 +56,28 @@ const Index = () => {
       localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
     }
   }, [messages]);
+
+  // Scroll automático para a última mensagem
+  useEffect(() => {
+    if (showChat && messagesContainerRef.current) {
+      // Scroll suave para o final do container
+      setTimeout(() => {
+        if (messagesContainerRef.current) {
+          messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+        }
+      }, 100);
+    }
+  }, [messages, showChat]);
+
+  // Focar no input quando o chat abrir
+  useEffect(() => {
+    if (showChat && inputRef.current) {
+      // Pequeno delay para garantir que o DOM está pronto
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, [showChat]);
 
   const handleWhatsAppClick = () => {
     window.open('https://api.whatsapp.com/send/?phone=5584998561010&text=Olá&type=phone_number&app_absent=0', '_blank');
@@ -144,6 +169,10 @@ const Index = () => {
       });
     } finally {
       setIsLoading(false);
+      // Focar no input novamente após enviar
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
     }
   };
 
@@ -297,9 +326,12 @@ const Index = () => {
               </div>
 
               {/* Chat Messages Area */}
-              <div className={`absolute inset-0 overflow-y-auto px-4 pt-6 pb-20 bg-gray-50 transition-all duration-500 ease-in-out flex flex-col ${
-                showChat ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
-              }`}>
+              <div 
+                ref={messagesContainerRef}
+                className={`absolute inset-0 overflow-y-auto px-4 pt-6 pb-20 bg-gray-50 transition-all duration-500 ease-in-out flex flex-col ${
+                  showChat ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+                }`}
+              >
                 <div className="flex flex-col gap-4 max-w-2xl mx-auto mt-auto pt-4">
                   {messages.map((message: any) => (
                     <div
@@ -343,6 +375,8 @@ const Index = () => {
                       </div>
                     </div>
                   ))}
+                  {/* Elemento para scroll automático */}
+                  <div ref={messagesEndRef} />
                 </div>
               </div>
             </main>
@@ -352,6 +386,7 @@ const Index = () => {
               <label className="relative flex items-center h-[54px] w-[88%] mx-auto max-w-[600px]">
                 <span className="material-symbols-outlined text-brand-green absolute left-4">auto_awesome</span>
                 <input 
+                  ref={inputRef}
                   className="w-full h-full rounded-full text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-green border-none bg-white shadow-input placeholder:text-placeholder-gray pl-12 pr-12 text-base font-normal leading-normal font-poppins"
                   placeholder="Faça uma pergunta..."
                   type="text"
